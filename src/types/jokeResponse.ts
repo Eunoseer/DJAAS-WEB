@@ -1,6 +1,6 @@
 type JokeResponse = {
-  id: string;
-  joke: string;
+  Id: number;
+  Joke: string;
 };
 
 export default JokeResponse;

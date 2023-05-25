@@ -1,5 +1,22 @@
-import GetRandomDadJoke from "@/server/GetDadJokes";
+"use client";
+
 import Link from "next/link";
+import useSWR from "swr";
+import JokeResponse from "@/types/jokeResponse";
+
+const fetcher = (url: string) =>
+  fetch(url).then((r) => {
+    return r.json();
+  });
+
+const GetRandomDadJoke = async (): Promise<JokeResponse> => {
+  const { data, error } = useSWR(
+    `${process.env.API_TARGET_URL}/jokes/random`,
+    fetcher
+  );
+
+  return data as JokeResponse;
+};
 
 export default async function Home() {
   const jokeData = GetRandomDadJoke();
@@ -8,7 +25,7 @@ export default async function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="max-w-5xl items-center lg:flex">
-        <h1>{joke.joke}</h1>
+        <h1>{joke.Joke}</h1>
       </div>
       <div className="max-w-5xl items-center lg:flex">
         <h1>
