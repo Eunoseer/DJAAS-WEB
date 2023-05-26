@@ -9,23 +9,29 @@ const fetcher = (url: string) =>
     return r.json();
   });
 
-const GetRandomDadJoke = async (): Promise<JokeResponse> => {
+const GetRandomDadJoke = (): JokeResponse => {
   const { data, error } = useSWR(
-    `${process.env.API_TARGET_URL}/jokes/random`,
+    `${process.env.NEXT_PUBLIC_API_TARGET_URL}/jokes/random`,
     fetcher
   );
 
-  return data as JokeResponse;
+  if (!error) {
+    return data?.Item as JokeResponse;
+  }
+
+  return {
+    Id: -1,
+    Joke: "An error has occurred retrieving a joke. Sorry about that!",
+  } as JokeResponse;
 };
 
-export default async function Home() {
+export default function Home() {
   const jokeData = GetRandomDadJoke();
-  const [joke] = await Promise.all([jokeData]);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="max-w-5xl items-center lg:flex">
-        <h1>{joke.Joke}</h1>
+        <h1>{jokeData?.Joke || ""}</h1>
       </div>
       <div className="max-w-5xl items-center lg:flex">
         <h1>
