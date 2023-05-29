@@ -1,22 +1,35 @@
-import "./globals.css";
+import "./css/style.css";
+
 import { Inter } from "next/font/google";
 
-const inter = Inter({ subsets: ["latin"] });
+import Header from "@/components/ui/header";
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
 
 export const metadata = {
-  title: "Dad Jokes Service",
-  description:
-    "Are you looking for a daily dose of dad joke, served right into your mailbox?",
+  title: "Dad Jokes",
+  description: "A fictional service for providing dad jokes.",
 };
 
-export default function HomeLayout({
+export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body
+        className={`${inter.variable} font-inter antialiased tracking-tight`}
+      >
+        <div className="flex flex-col min-h-screen overflow-hidden supports-[overflow:clip]:overflow-clip">
+          <Header />
+          {children}
+        </div>
+      </body>
     </html>
   );
 }
