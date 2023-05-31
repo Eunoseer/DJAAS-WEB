@@ -23,16 +23,17 @@ jobs:
       - run: 7z a -tzip BUILD_${{ github.RUN_NUMBER  }}.zip ./out/*
       - uses: actions/upload-artifact@v3
         with:
-          name: BUILD_${{ github.RUN_NUMBER  }}
+          name: BUILD_${{ github.RUN_NUMBER  }}.zip
           path: BUILD_${{ github.RUN_NUMBER  }}.zip
           retention-days: 1
   deploy:
     runs-on: ubuntu-latest
     environment: prod
+    needs: build
     steps:
       - uses: actions/download-artifact@v3
         with:
-          name: BUILD_${{ github.RUN_NUMBER  }}
+          name: BUILD_${{ github.RUN_NUMBER  }}.zip
           path: BUILD_${{ github.RUN_NUMBER  }}.zip
       - run: 7z x -y BUILD_${{ github.RUN_NUMBER  }}.zip -r -oout
       - run: ls -la
