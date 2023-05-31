@@ -20,11 +20,11 @@ jobs:
           cat .env
       - run: npm ci
       - run: npm run build
-      - run: 7z a -tzip BUILD_${{ github.GITHUB_RUN_NUMBER }}.zip ./out/*
+      - run: 7z a -tzip BUILD_${{ github.RUN_NUMBER  }}.zip ./out/*
       - uses: actions/upload-artifact@v3
         with:
-          name: BUILD_${{ github.GITHUB_RUN_NUMBER }}
-          path: BUILD_${{ github.GITHUB_RUN_NUMBER }}.zip
+          name: BUILD_${{ github.RUN_NUMBER  }}
+          path: BUILD_${{ github.RUN_NUMBER  }}.zip
           retention-days: 1
   deploy:
     runs-on: ubuntu-latest
@@ -32,9 +32,9 @@ jobs:
     steps:
       - uses: actions/download-artifact@v3
         with:
-          name: BUILD_${{ github.GITHUB_RUN_NUMBER }}
-          path: BUILD_${{ github.GITHUB_RUN_NUMBER }}.zip
-      - run: 7z x -y BUILD_${{ github.GITHUB_RUN_NUMBER }}.zip -r -oout
+          name: BUILD_${{ github.RUN_NUMBER  }}
+          path: BUILD_${{ github.RUN_NUMBER  }}.zip
+      - run: 7z x -y BUILD_${{ github.RUN_NUMBER  }}.zip -r -oout
       - run: ls -la
       - uses: aws-actions/configure-aws-credentials@v2
         with:
